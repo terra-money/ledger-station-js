@@ -42,7 +42,7 @@ export class LedgerKey extends Key {
    *
    * @param transport transporter for LedgerKey
    */
-  constructor(private transport: Transport) {
+  constructor(private transport: Transport | null) {
     super();
     this.app = new TerraApp(this.transport);
     //this.app.initialize().then((res) => { console.log(res) });
@@ -66,6 +66,7 @@ export class LedgerKey extends Key {
     if (!transport) {
       transport = await createTransport();
     }
+
     const key = new LedgerKey(transport);
 
     if (index != undefined) {
