@@ -17,7 +17,7 @@
 
 import * as crypto from "crypto";
 import Ripemd160 from "ripemd160";
-import * as bech32 from "bech32";
+import { bech32 } from "bech32";
 import {
   publicKey,
   serializePath,

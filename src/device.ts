@@ -1,20 +1,12 @@
-import {
-  CLA,
-  ERROR_CODE,
-  P1_VALUES,
-  INS,
-  PAYLOAD_TYPE,
-  CHUNK_SIZE,
-  ERROR_DESCRIPTION,
-} from "./constants";
+import { CLA, ERROR_CODE, P1_VALUES, INS, PAYLOAD_TYPE, CHUNK_SIZE, ERROR_DESCRIPTION } from "./constants";
 
 import {
   AppInfoResponse,
   VersionResponse,
   DeviceInfoResponse,
   PublicKeyResponse,
-  SignResponse
-} from './types'
+  SignResponse,
+} from "./types";
 
 function errorCodeToString(statusCode): string {
   if (statusCode in ERROR_DESCRIPTION) {
