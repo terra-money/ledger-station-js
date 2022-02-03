@@ -1,6 +1,6 @@
 {
   "name": "@terra-money/ledger-terra-js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "API for Terra App (Ledger Nano S/X)",
   "main": "./dist/index.js",
   "repository": {
@@ -17,9 +17,9 @@
   "author": "ZondaX GmbH",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/terra-project/ledger-terra-js/issues"
+    "url": "https://github.com/terra-money/ledger-terra-js/issues"
   },
-  "homepage": "https://github.com/terra-project/ledger-terra-js",
+  "homepage": "https://github.com/terra-money/ledger-terra-js",
   "dependencies": {
     "@ledgerhq/hw-transport": "^6.20.0",
     "@ledgerhq/hw-transport-webhid": "^6.20.0",
