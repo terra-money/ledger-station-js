@@ -65,7 +65,7 @@
     "test:unit": "jest -c jest.config.unit.js --runInBand --detectOpenHandles",
     "test:ci": "jest tests/basic.spec.ts --runInBand --detectOpenHandles",
     "test:integration": "jest -c jest.config.integration.js --runInBand --detectOpenHandles",
-    "serve": "openssl req -nodes -new -x509 -config certs/openssl.cnf -keyout certs/server.key -out certs/server.cert; openssl x509 -in certs/server.cert -out certs/cert.pem -outform PEM; vue-cli-service serve vue_example/main.js",
+    "serve": "vue-cli-service serve vue_example/main.js",
     "prepublishOnly": "npm run build"
   },
   "moduleDirectories": [
