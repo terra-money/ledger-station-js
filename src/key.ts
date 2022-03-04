@@ -156,8 +156,10 @@ export class LedgerKey extends Key {
   }
 }
 
-const handleTransportError = (err: Error) => {
-  if (err.message.startsWith("The device is already open")) {
+const handleConnectError = (err: Error) => {
+  const message = err.message.trim();
+
+  if (message.startsWith("The device is already open")) {
     // ignore this error
     return; //transport
   }
@@ -165,12 +167,6 @@ const handleTransportError = (err: Error) => {
   if (err.name === "TransportOpenUserCancelled") {
     throw new LedgerError("Couldn't find the Ledger. Check the Ledger is plugged in and unlocked.");
   }
-
-  throw err;
-};
-
-const handleConnectError = (err: Error) => {
-  const message = err.message.trim();
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith("No WebUSB interface found for the Ledger device")) {
@@ -181,6 +177,12 @@ const handleConnectError = (err: Error) => {
 
   /* istanbul ignore next: specific error rewrite */
   if (message.startsWith("Unable to claim interface")) {
+    // apparently can't use it in several tabs in parallel
+    throw new LedgerError("Couldn't access Ledger device. Is it being used in another tab?");
+  }
+
+  /* istanbul ignore next: specific error rewrite */
+  if (message.startsWith("Transport not defined")) {
     // apparently can't use it in several tabs in parallel
     throw new LedgerError("Couldn't access Ledger device. Is it being used in another tab?");
   }
@@ -270,11 +272,11 @@ async function createTransport(): Promise<Transport> {
     }
 
     const TransportWebHid = require("@ledgerhq/hw-transport-webhid").default;
-    transport = await TransportWebHid.create(INTERACTION_TIMEOUT * 1000).catch(handleTransportError);
+    transport = await TransportWebHid.create(INTERACTION_TIMEOUT * 1000).catch(handleConnectError);
   } else {
     // For other than Windows
     const TransportWebUsb = require("@ledgerhq/hw-transport-webusb").default;
-    transport = await TransportWebUsb.create(INTERACTION_TIMEOUT * 1000).catch(handleTransportError);
+    transport = await TransportWebUsb.create(INTERACTION_TIMEOUT * 1000).catch(handleConnectError);
   }
   return transport;
 }
