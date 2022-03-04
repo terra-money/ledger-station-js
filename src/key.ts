@@ -6,7 +6,7 @@ import Transport from "@ledgerhq/hw-transport";
 import TerraApp from "./app";
 import { signatureImport } from "secp256k1";
 import { SignatureV2, SignDoc } from "@terra-money/terra.js";
-import { CommonResponse } from "./types";
+import { AppInfoResponse, CommonResponse, DeviceInfoResponse, PublicKeyResponse, VersionResponse } from "./types";
 import semver from "semver";
 
 const LUNA_COIN_TYPE = 330;
@@ -129,6 +129,30 @@ export class LedgerKey extends Key {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async createSignature(_tx: SignDoc): Promise<SignatureV2> {
     throw new Error("direct sign mode is not supported");
+  }
+
+  public async getAppAddressAndPubKey(): Promise<PublicKeyResponse> {
+    return this.app.getAddressAndPubKey(this.path, 'terra');
+  }
+
+  public getAppInfo(): AppInfoResponse {
+    return this.app.getInfo();
+  }
+
+  public async getAppDeviceInfo(): Promise<DeviceInfoResponse> {
+    return this.app.getDeviceInfo()
+  }
+
+  public async getAppPublicKey(): Promise<PublicKeyResponse> {
+    return this.app.getPublicKey(this.path);
+  }
+
+  public getAppVersion(): VersionResponse {
+    return this.app.getVersion();
+  }
+
+  public async showAddressAndPubKey(): Promise<PublicKeyResponse> {
+    return this.app.showAddressAndPubKey(this.path, 'terra');
   }
 }
 
