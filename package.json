@@ -1,6 +1,6 @@
 {
   "name": "@terra-money/ledger-terra-js",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "API for Terra App (Ledger Nano S/X)",
   "main": "./dist/index.js",
   "repository": {
@@ -22,16 +22,16 @@
   "homepage": "https://github.com/terra-money/ledger-terra-js",
   "dependencies": {
     "@ledgerhq/hw-transport": "^6.20.0",
+    "@ledgerhq/hw-transport-node-hid": "^6.20.0",
     "@ledgerhq/hw-transport-webhid": "^6.20.0",
     "@ledgerhq/hw-transport-webusb": "^6.20.0",
-    "@ledgerhq/hw-transport-node-hid": "^6.20.0",
     "bech32": "^2.0.0",
     "ripemd160": "^2.0.2"
   },
   "devDependencies": {
     "@codejedi365/jest-serial-runner": "^2.0.0",
     "@ledgerhq/logs": "^6.10.0",
-    "@terra-money/terra.js": "^3.0.6",
+    "@terra-money/terra.js": "v3.1.7",
     "@types/jest": "^27.0.3",
     "@types/ripemd160": "^2.0.0",
     "@types/secp256k1": "^4.0.3",
@@ -57,7 +57,7 @@
     "vue-template-compiler": "^2.6.10"
   },
   "peerDependencies": {
-    "@terra-money/terra.js": "^3.0.6",
+    "@terra-money/terra.js": "^3.1.7",
     "secp256k1": "^4.0.3"
   },
   "scripts": {
