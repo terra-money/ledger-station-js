@@ -1,11 +1,11 @@
-import { Key } from "@terra-money/terra.js";
-import { AccAddress } from "@terra-money/terra.js";
-import { SimplePublicKey } from "@terra-money/terra.js";
+import { Key } from "@terra-money/station.js";
+import { AccAddress } from "@terra-money/station.js";
+import { SimplePublicKey } from "@terra-money/station.js";
 
 import Transport from "@ledgerhq/hw-transport";
 import TerraApp from "./app";
 import { signatureImport } from "secp256k1";
-import { SignatureV2, SignDoc } from "@terra-money/terra.js";
+import { SignatureV2, SignDoc } from "@terra-money/station.js";
 import { AppInfoResponse, CommonResponse, DeviceInfoResponse, PublicKeyResponse, VersionResponse } from "./types";
 import semver from "semver";
 
@@ -34,7 +34,6 @@ export class LedgerError extends Error {
  * in Ledger device
  */
 export class LedgerKey extends Key {
-  private _accAddress?: AccAddress;
   private app: TerraApp;
   private path: number[] = [44, LUNA_COIN_TYPE, 0, 0, 0];
 
@@ -49,14 +48,14 @@ export class LedgerKey extends Key {
   }
 
   /**
-   * Terra account address. `terra-` prefixed.
+   * Account address
    */
-  public get accAddress(): AccAddress {
+  public accAddress(prefix: string): AccAddress {
     if (!this.publicKey) {
       throw new Error("Ledger is unintialized. Initialize it first.");
     }
 
-    return this.publicKey.address();
+    return this.publicKey.address(prefix);
   }
 
   /**
@@ -108,10 +107,9 @@ export class LedgerKey extends Key {
    * get Address and Pubkey from Ledger
    */
   public async loadAccountDetails(): Promise<LedgerKey> {
-    const res = await this.app.getAddressAndPubKey(this.path, "terra");
+    const res = await this.app.getPublicKey(this.path);
     checkLedgerErrors(res);
 
-    this._accAddress = res.bech32_address;
     this.publicKey = new SimplePublicKey(Buffer.from(res.compressed_pk.data).toString("base64"));
     return this;
   }
@@ -131,8 +129,8 @@ export class LedgerKey extends Key {
     throw new Error("direct sign mode is not supported");
   }
 
-  public async getAppAddressAndPubKey(): Promise<PublicKeyResponse> {
-    return this.app.getAddressAndPubKey(this.path, 'terra');
+  public async getAppAddressAndPubKey(prefix: string): Promise<PublicKeyResponse> {
+    return this.app.getAddressAndPubKey(this.path, prefix);
   }
 
   public getAppInfo(): AppInfoResponse {
@@ -151,8 +149,8 @@ export class LedgerKey extends Key {
     return this.app.getVersion();
   }
 
-  public async showAddressAndPubKey(): Promise<PublicKeyResponse> {
-    return this.app.showAddressAndPubKey(this.path, 'terra');
+  public async showAddressAndPubKey(prefix: string): Promise<PublicKeyResponse> {
+    return this.app.showAddressAndPubKey(this.path, prefix);
   }
 }
 
