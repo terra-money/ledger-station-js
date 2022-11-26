@@ -1,11 +1,11 @@
-import { Key } from "@terra-money/station.js";
-import { AccAddress } from "@terra-money/station.js";
-import { SimplePublicKey } from "@terra-money/station.js";
+import { Key } from "@terra-money/feather.js";
+import { AccAddress } from "@terra-money/feather.js";
+import { SimplePublicKey } from "@terra-money/feather.js";
 
 import Transport from "@ledgerhq/hw-transport";
 import TerraApp from "./app";
 import { signatureImport } from "secp256k1";
-import { SignatureV2, SignDoc } from "@terra-money/station.js";
+import { SignatureV2, SignDoc } from "@terra-money/feather.js";
 import { AppInfoResponse, CommonResponse, DeviceInfoResponse, PublicKeyResponse, VersionResponse } from "./types";
 import semver from "semver";
 
