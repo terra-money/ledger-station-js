@@ -6,7 +6,13 @@ import Transport from "@ledgerhq/hw-transport";
 import TerraApp from "./app";
 import { signatureImport } from "secp256k1";
 import { SignatureV2, SignDoc } from "@terra-money/feather.js";
-import { AppInfoResponse, CommonResponse, DeviceInfoResponse, PublicKeyResponse, VersionResponse } from "./types";
+import {
+  AppInfoResponse,
+  CommonResponse,
+  DeviceInfoResponse,
+  PublicKeyResponse,
+  VersionResponse
+} from "./types";
 import semver from "semver";
 
 const LUNA_COIN_TYPE = 330;
@@ -61,7 +67,15 @@ export class LedgerKey extends Key {
   /**
    * create and return initialized ledger key
    */
-  public static async create(transport?: Transport, index?: number): Promise<LedgerKey> {
+  public static async create({
+    transport,
+    index,
+    coinType
+  }: {
+    transport?: Transport,
+    index?: number,
+    coinType?: number
+  }): Promise<LedgerKey> {
     if (!transport) {
       transport = await createTransport();
     }
@@ -70,6 +84,10 @@ export class LedgerKey extends Key {
 
     if (index != undefined) {
       key.path[4] = index;
+    }
+
+    if (coinType != undefined) {
+      key.path[2] = coinType;
     }
 
     if (transport && typeof transport.on === "function") {
