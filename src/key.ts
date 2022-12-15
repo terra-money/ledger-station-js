@@ -87,7 +87,7 @@ export class LedgerKey extends Key {
     }
 
     if (coinType != undefined) {
-      key.path[2] = coinType;
+      key.path[1] = coinType;
     }
 
     if (transport && typeof transport.on === "function") {
