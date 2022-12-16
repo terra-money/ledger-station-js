@@ -2,7 +2,7 @@ import { LedgerKey } from "../src";
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 
 async function main() {
-  const lk = await LedgerKey.create(await TransportNodeHid.create(60 * 1000));
+  const lk = await LedgerKey.create({ transport: await TransportNodeHid.create(60 * 1000) });
   console.log(`accAddress: ${lk.accAddress('terra')} / publicKey: ${JSON.stringify(lk.publicKey)}`);
 
   console.log(lk.getAppInfo());

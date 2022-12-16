@@ -14,6 +14,7 @@ import {
   VersionResponse
 } from "./types";
 import semver from "semver";
+import { closeCurrentApp, getAppInfo, openApp } from "./device";
 
 const LUNA_COIN_TYPE = 330;
 const INTERACTION_TIMEOUT = 120;
@@ -105,12 +106,17 @@ export class LedgerKey extends Key {
    * it loads accAddress and pubkicKey from connedted Ledger
    */
   private async initialize() {
-    const res = await this.app.initialize();
+    const requiredAppName = this.path[1] === 330 ? "Terra" : "Cosmos";
 
-    const { app_name: appName } = this.app.getInfo();
-    if (appName !== "Terra") {
-      throw new LedgerError("Open the Terra app in the Ledger");
+
+    const appName = (await getAppInfo(this.transport)).app_name;
+    if (appName !== requiredAppName) {
+      // close current app, if no app is open, it will just do nothing
+      await closeCurrentApp(this.transport).catch(console.error);
+      // open the required app
+      await openApp(this.transport, requiredAppName).catch(console.error);
     }
+    const res = await this.app.initialize();
 
     const { major, minor, patch } = this.app.getVersion();
     const version = `${major}.${minor}.${patch}`;

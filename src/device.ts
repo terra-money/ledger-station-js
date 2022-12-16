@@ -146,6 +146,15 @@ export function getAppInfo(transport): Promise<AppInfoResponse> {
     .catch(processErrorResponse);
 }
 
+export async function closeCurrentApp(transport) {
+  // true if success, false if error
+  return (await transport.send(0xb0, 0xa7, 0x00, 0x00)).toString("hex") === "9000";
+}
+
+export async function openApp(transport, name: string) {
+  await transport.send(0xe0, 0xd8, 0x00, 0x00, Buffer.from(name, "ascii"));
+}
+
 export async function getDeviceInfo(transport): Promise<DeviceInfoResponse> {
   return transport
     .send(0xe0, 0x01, 0, 0, Buffer.from([]), [ERROR_CODE.NoError, 0x6e00])
