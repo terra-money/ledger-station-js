@@ -5,7 +5,7 @@ import { LedgerKey } from "../src";
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 
 async function main() {
-  const lk = await LedgerKey.create({ transport: await TransportNodeHid.create(60 * 1000), coinType: 330 });
+  const lk = await LedgerKey.create({ transport: () => TransportNodeHid.create(60 * 1000), coinType: 330 });
   console.log(`accAddress: ${lk.accAddress('terra')} / publicKey: ${JSON.stringify(lk.publicKey)}`);
 
   const terra = LCDClient.fromDefaultConfig('testnet');

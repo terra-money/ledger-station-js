@@ -73,15 +73,35 @@ export class LedgerKey extends Key {
     index,
     coinType
   }: {
-    transport?: Transport,
+    transport?: () => Promise<Transport>,
     index?: number,
     coinType?: number
   }): Promise<LedgerKey> {
-    if (!transport) {
-      transport = await createTransport();
-    }
+    transport ??= createTransport;
 
-    const key = new LedgerKey(transport);
+    // check if the app is correct
+    const requiredAppName = coinType === 118 ? "Cosmos" : "Terra";
+
+
+    let t = await transport();
+    const appName = (await getAppInfo(t)).app_name;
+    if (appName !== requiredAppName) {
+      // if there is an open app, close it
+      if (appName !== "BOLOS") {
+        await closeCurrentApp(t);
+        await t.close();
+        // wait .5s, and then reinitialize the transport
+        await new Promise(r => setTimeout(r, 500));
+        t = await transport();
+      }
+      // open the required app
+      await openApp(t, requiredAppName).catch(console.error);
+      await t.close();
+      // wait .5s, and then reinitialize the transport
+      await new Promise(r => setTimeout(r, 500));
+      t = await transport();
+    }
+    const key = new LedgerKey(t);
 
     if (index != undefined) {
       key.path[4] = index;
@@ -91,8 +111,8 @@ export class LedgerKey extends Key {
       key.path[1] = coinType;
     }
 
-    if (transport && typeof transport.on === "function") {
-      transport.on("disconnect", () => {
+    if (t && typeof t.on === "function") {
+      t.on("disconnect", () => {
         key.transport = null;
       });
     }
@@ -106,17 +126,8 @@ export class LedgerKey extends Key {
    * it loads accAddress and pubkicKey from connedted Ledger
    */
   private async initialize() {
-    const requiredAppName = this.path[1] === 330 ? "Terra" : "Cosmos";
-
-
-    const appName = (await getAppInfo(this.transport)).app_name;
-    if (appName !== requiredAppName) {
-      // close current app, if no app is open, it will just do nothing
-      await closeCurrentApp(this.transport).catch(console.error);
-      // open the required app
-      await openApp(this.transport, requiredAppName).catch(console.error);
-    }
     const res = await this.app.initialize();
+    const appName = (await getAppInfo(this.transport)).app_name;
 
     const { major, minor, patch } = this.app.getVersion();
     const version = `${major}.${minor}.${patch}`;
