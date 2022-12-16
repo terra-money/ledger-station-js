@@ -82,23 +82,22 @@ export class LedgerKey extends Key {
     // check if the app is correct
     const requiredAppName = coinType === 118 ? "Cosmos" : "Terra";
 
-
     let t = await transport();
     const appName = (await getAppInfo(t)).app_name;
     if (appName !== requiredAppName) {
       // if there is an open app, close it
       if (appName !== "BOLOS") {
         await closeCurrentApp(t);
-        await t.close();
-        // wait .5s, and then reinitialize the transport
-        await new Promise(r => setTimeout(r, 500));
+        await t.close().catch(() => {});
+        // wait 1s, and then reinitialize the transport
+        await new Promise(r => setTimeout(r, 1000));
         t = await transport();
       }
       // open the required app
       await openApp(t, requiredAppName).catch(console.error);
-      await t.close();
-      // wait .5s, and then reinitialize the transport
-      await new Promise(r => setTimeout(r, 500));
+      await t.close().catch(() => {});
+      // wait 1s, and then reinitialize the transport
+      await new Promise(r => setTimeout(r, 1000));
       t = await transport();
     }
     const key = new LedgerKey(t);
