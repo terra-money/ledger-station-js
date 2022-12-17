@@ -71,11 +71,13 @@ export class LedgerKey extends Key {
   public static async create({
     transport,
     index,
-    coinType
+    coinType,
+    onConnect
   }: {
     transport?: () => Promise<Transport>,
     index?: number,
     coinType?: number
+    onConnect?: () => void
   }): Promise<LedgerKey> {
     transport ??= createTransport;
 
@@ -93,6 +95,8 @@ export class LedgerKey extends Key {
         await new Promise(r => setTimeout(r, 1000));
         t = await transport();
       }
+      // trigger this callback on connection
+      onConnect && onConnect();
       // open the required app
       await openApp(t, requiredAppName).catch(console.error);
       await t.close().catch(() => {});
