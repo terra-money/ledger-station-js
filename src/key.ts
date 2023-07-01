@@ -82,7 +82,7 @@ export class LedgerKey extends Key {
     transport ??= createTransport;
 
     // check if the app is correct
-    const requiredAppName = coinType === 118 ? "Cosmos" : "Terra";
+    const requiredAppName = "Station";
 
     let t = await transport();
     const appName = (await getAppInfo(t)).app_name;
@@ -90,7 +90,7 @@ export class LedgerKey extends Key {
       // if there is an open app, close it
       if (appName !== "BOLOS") {
         await closeCurrentApp(t);
-        await t.close().catch(() => {});
+        await t.close().catch(() => { });
         // wait 1s, and then reinitialize the transport
         await new Promise(r => setTimeout(r, 1000));
         t = await transport();
@@ -99,7 +99,7 @@ export class LedgerKey extends Key {
       onConnect && onConnect();
       // open the required app
       await openApp(t, requiredAppName).catch(console.error);
-      await t.close().catch(() => {});
+      await t.close().catch(() => { });
       // wait 1s, and then reinitialize the transport
       await new Promise(r => setTimeout(r, 1000));
       t = await transport();
@@ -130,13 +130,15 @@ export class LedgerKey extends Key {
    */
   private async initialize() {
     const res = await this.app.initialize();
+        /*
     const appName = (await getAppInfo(this.transport)).app_name;
+
 
     const { major, minor, patch } = this.app.getVersion();
     const version = `${major}.${minor}.${patch}`;
-    if (appName === "Terra" && semver.lt(version, REQUIRED_APP_VERSION)) {
+    if (appName === "Station" && semver.lt(version, REQUIRED_APP_VERSION)) {
       throw new LedgerError("Outdated version: Update Ledger Terra App to the latest version");
-    }
+    }*/
     checkLedgerErrors(res);
     await this.loadAccountDetails();
   }

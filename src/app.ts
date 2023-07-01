@@ -37,8 +37,7 @@ import {
   SignResponse,
 } from "./types";
 
-const APP_NAME_TERRA = "Terra";
-const APP_NAME_COSMOS = "Cosmos";
+const APP_NAME_TERRA = "Station";
 
 export default class TerraApp {
   private transport;
@@ -83,8 +82,7 @@ export default class TerraApp {
       }
 
       if (
-        (this.info.app_name === APP_NAME_TERRA && this.version.major === 1) ||
-        (this.info.app_name === APP_NAME_COSMOS && this.version.major === 2)
+        (this.info.app_name === APP_NAME_TERRA && this.version.major === 1)
       ) {
         return null;
       }
