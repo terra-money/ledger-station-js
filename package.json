@@ -1,6 +1,6 @@
 {
   "name": "@terra-money/ledger-station-js",
-  "version": "1.3.8",
+  "version": "1.4.0",
   "description": "API for Terra App (Ledger Nano S/X)",
   "main": "./dist/index.js",
   "repository": {
@@ -28,7 +28,7 @@
     "ripemd160": "^2.0.2"
   },
   "devDependencies": {
-    "@terra-money/feather.js": "^1.0.8",
+    "@terra-money/feather.js": "^3.0.0-beta.3",
     "@codejedi365/jest-serial-runner": "^2.0.0",
     "@ledgerhq/logs": "^6.10.0",
     "@types/jest": "^27.0.3",
