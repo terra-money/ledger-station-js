@@ -12,5 +12,6 @@
     "strictNullChecks": true,
     "esModuleInterop": true
   },
+  "exclude": ["./node_modules/", "./tests"],
   "include": ["src"]
 }

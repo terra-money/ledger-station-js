@@ -28,7 +28,7 @@
     "ripemd160": "^2.0.2"
   },
   "devDependencies": {
-    "@terra-money/feather.js": "^1.0.8",
+    "@terra-money/feather.js": "^3.0.0-beta.3",
     "@codejedi365/jest-serial-runner": "^2.0.0",
     "@ledgerhq/logs": "^6.10.0",
     "@types/jest": "^27.0.3",
@@ -57,7 +57,7 @@
     "vue-template-compiler": "^2.6.10"
   },
   "peerDependencies": {
-    "@terra-money/feather.js": "^1.0.8",
+    "@terra-money/feather.js": "^2.0.4",
     "bech32": "^2.0.0",
     "secp256k1": "^4.0.3"
   },
